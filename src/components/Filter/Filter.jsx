@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { FilterStyle } from './Filter.styled';
 
 export const Filter = ({ onFilter, filter }) => {
@@ -13,9 +12,4 @@ export const Filter = ({ onFilter, filter }) => {
       />
     </FilterStyle>
   );
-};
-
-Filter.propTypes = {
-  filter: PropTypes.string.isRequired,
-  onFilter: PropTypes.func.isRequired,
 };

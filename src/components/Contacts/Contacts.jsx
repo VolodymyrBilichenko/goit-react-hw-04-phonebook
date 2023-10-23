@@ -1,5 +1,4 @@
 import { ContactsStyle } from './Contacts.styled';
-import PropTypes from 'prop-types';
 
 export const Contacts = ({ contacts, formDeleteHandler }) => {
   return (
@@ -18,15 +17,4 @@ export const Contacts = ({ contacts, formDeleteHandler }) => {
       ))}
     </ContactsStyle>
   );
-};
-
-Contacts.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-  formDeleteHandler: PropTypes.func.isRequired,
 };
