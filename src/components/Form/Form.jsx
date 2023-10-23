@@ -1,20 +1,28 @@
-import { Component } from 'react';
+import { Component, useState } from 'react';
 import { FormStyle } from './From.styled';
 import { FormLabel } from './FormLabel.styled';
 import { nanoid } from 'nanoid';
 
-export class Form extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+export const Form = () => {
+  // state = {
+  //   name: '',
+  //   number: '',
+  // };
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
   handleChange = evt => {
     const { name, value } = evt.currentTarget;
 
-    this.setState({
-      [name]: value,
-    });
+    if (name === 'name') {
+      setName(value)
+    } else if (name === 'number') {
+      setNumber(value)
+    }
+
+    // this.setState({
+    //   [name]: value,
+    // });
   };
 
   formAddHandler = evt => {
@@ -22,24 +30,23 @@ export class Form extends Component {
 
     const newContact = {
       id: nanoid(),
-      name: this.state.name,
-      number: this.state.number,
+      name: name,
+      number: number,
     };
 
-    if (this.addedContact(newContact)) {
+    if (addedContact(newContact)) {
       alert(
-        `Contact: ${this.state.name} is already in contacts, Number: ${this.state.number}`
+        `Contact: ${name} is already in contacts, Number: ${number}`
       );
     } else {
-      this.props.onSubmit(newContact);
+      onSubmit(newContact)
     }
 
-    this.reset();
+    reset();
   };
 
   addedContact = newContact => {
-    return this.props.contacts.some(
-      contact =>
+    return contacts.some(contact =>
         contact.name.toLowerCase().trim() ===
           newContact.name.toLowerCase().trim() ||
         contact.number === newContact.number
@@ -47,12 +54,13 @@ export class Form extends Component {
   };
 
   reset = () => {
-    this.setState({ name: '', number: '' });
+    setName('');
+    setNumber('');
   };
 
   render() {
     return (
-      <FormStyle onSubmit={this.formAddHandler}>
+      <FormStyle onSubmit={formAddHandler}>
         <FormLabel>
           <label className="form__label" htmlFor="name">
             Name
@@ -62,8 +70,8 @@ export class Form extends Component {
               name="name"
               // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
               title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              value={this.state.name}
-              onChange={this.handleChange}
+              value={name}
+              onChange={handleChange}
               required
             />
           </label>
@@ -75,8 +83,8 @@ export class Form extends Component {
               name="number"
               // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
               title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              value={this.state.number}
-              onChange={this.handleChange}
+              value={number}
+              onChange={handleChange}
               required
             />
           </label>
