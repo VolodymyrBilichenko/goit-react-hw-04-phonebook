@@ -6,6 +6,7 @@ import { Filter } from './Filter/Filter';
 import { Contacts } from './Contacts/Contacts';
 import contactsData from './data/ContactsJson.json';
 import { EmptyContacts } from './EmptyContacts/EmptyContacts';
+import localforage from 'localforage';
 
 function filterByCriteria(field, fieldValue) {
   return field.toLowerCase().trim().includes(fieldValue.toLowerCase().trim());
@@ -16,36 +17,37 @@ export const App = () => {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    const localData = localStorage.getItem('contacts');
-    const localeParse = JSON.parse(localData);
-
-    if (localData && localeParse.length > 0) {
-      setContacts(localeParse);
-    } else {
-      setContacts(contactsData.contacts)
-    }
-  }, [])
+    localforage.getItem('contacts').then(savedContacts => {
+      if (savedContacts && savedContacts.length > 0) {
+        setContacts(savedContacts);
+      } else {
+        setContacts(contactsData.contacts);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts])
+  }, [contacts]);
 
   const formDeleteHandler = contactsId => {
-    setContacts(contacts.filter(contact => contact.id !== contactsId));
-    localStorage.setItem('contacts', JSON.stringify(contacts)); // Оновити local storage
+    const updatedContacts = contacts.filter(contact => contact.id !== contactsId);
+    setContacts(updatedContacts);
+    localforage.setItem('contacts', updatedContacts);
   };
 
   const formAddHandler = newContact => {
-    setContacts([...contacts, newContact])
+    const updatedContacts = [...contacts, newContact];
+    setContacts(updatedContacts);
+    localforage.setItem('contacts', updatedContacts);
   };
 
   const onFilter = evt => {
-    setFilter(evt.target.value)
+    setFilter(evt.target.value);
   };
 
   const filteredContacts = contacts.filter(contact =>
-      filterByCriteria(contact.name, filter) ||
-      filterByCriteria(contact.number, filter)
+    filterByCriteria(contact.name, filter) || filterByCriteria(contact.number, filter)
   );
 
   return (
@@ -70,4 +72,4 @@ export const App = () => {
       </Section>
     </Container>
   );
-}
+};
