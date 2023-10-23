@@ -3,7 +3,7 @@ import { FormStyle } from './From.styled';
 import { FormLabel } from './FormLabel.styled';
 import { nanoid } from 'nanoid';
 
-export const Form = () => {
+export const Form = ({onSubmit, contacts}) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
