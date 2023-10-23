@@ -19,6 +19,7 @@ export class App extends Component {
 
   componentDidMount() {
     // Те що знаходиться в localeStorage будемо сетити в тому випадку якщо localData і її довжина більша ніж 0
+    
     const localData = localStorage.getItem('contacts');
     const localeParse = JSON.parse(localData);
     if (localData && localeParse.length > 0)
